@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: gps-backend
+    env: python
+    plan: starter
+    buildCommand: pip install -r backend/requirements.txt && python backend/manage.py migrate --noinput && python backend/manage.py collectstatic --noinput
+    startCommand: gunicorn protrack.wsgi
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: SECRET_KEY
+        sync: false
+      - key: DEBUG
+        sync: false
+      - key: ALLOWED_HOSTS
+        sync: false
+
+  - type: static
+    name: nuxt-frontend
+    env: static
+    plan: starter
+    buildCommand: cd frontend/nuxt-app && npm ci && npm run build && npm run generate
+    publishPath: frontend/nuxt-app/.output/public
+    envVars:
+      - key: NUXT_PUBLIC_API_URL
+        value: https://gps-backend.onrender.com
+
+databases:
+  - name: gps-db
+    type: postgresql
+    plan: starter
