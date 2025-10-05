@@ -193,10 +193,14 @@ def format_time_since(unix_timestamp):
 
 def combine_coordinates(latitude, longitude):
     """Combine latitude and longitude into a single string"""
+    logger.debug(f"Combining coordinates: lat={latitude} (type: {type(latitude)}), lng={longitude} (type: {type(longitude)})")
     if (latitude and longitude and 
         str(latitude) not in ["", "0", "0.0", "None", "null"] and 
         str(longitude) not in ["", "0", "0.0", "None", "null"]):
-        return f"{latitude},{longitude}"
+        result = f"{latitude},{longitude}"
+        logger.debug(f"Combined coordinates result: {result}")
+        return result
+    logger.debug("Coordinates invalid, returning '0,0'")
     return "0,0"
 
 def convert_hearttime_to_gmt7_separated(unix_timestamp):
@@ -267,6 +271,9 @@ def process_tracking_data(raw_data: List[Dict[str, Any]], original_imeis: List[s
                     longitude = device.get('longitude', '')
                     datastatus_num = device.get('datastatus', '')
                     raw_hearttime = device.get('hearttime', '')
+                    
+                    # Debug logging for coordinates
+                    logger.debug(f"Device {imei}: lat={latitude}, lng={longitude}, raw_data={device}")
                     
                     heart_date, heart_time = convert_hearttime_to_gmt7_separated(raw_hearttime)
 
