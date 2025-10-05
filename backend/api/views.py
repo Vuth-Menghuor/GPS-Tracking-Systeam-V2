@@ -173,7 +173,12 @@ def load_to_database(request):
         })
         
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        import traceback
+        error_details = {
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }
+        return JsonResponse({'success': False, 'error': error_details}, status=500)
 
 
 @csrf_exempt
