@@ -81,9 +81,8 @@ import dj_database_url
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://user:pass@localhost/dbname',
-        conn_max_age=600,
-        conn_health_checks=True,
+        default='sqlite:///db.sqlite3',
+        conn_max_age=600
     )
 }
 
@@ -131,7 +130,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS settings for frontend communication
-CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,http://127.0.0.1:3000').split(',')
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,http://127.0.0.1:3000,https://gps-tracking-systeam-v2-7rnaiwotf-vuth-menghuors-projects.vercel.app').split(',')
 
 CORS_ALLOW_CREDENTIALS = True
 
