@@ -16,8 +16,25 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.http import JsonResponse
+
+def api_root(request):
+    return JsonResponse({
+        "message": "GPS Tracking API",
+        "version": "1.0",
+        "endpoints": {
+            "stats": "/api/stats/",
+            "devices": "/api/devices/",
+            "fetch_tracking": "/api/fetch-tracking/",
+            "load_database": "/api/load-database/",
+            "export_csv": "/api/export-csv/",
+            "logs": "/api/logs/",
+            "admin": "/admin/"
+        }
+    })
 
 urlpatterns = [
+    path('', api_root, name='api_root'),
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
 ]
