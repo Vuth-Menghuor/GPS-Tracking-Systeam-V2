@@ -102,12 +102,7 @@ def get_device_data(request):
             }
         })
     except Exception as e:
-        import traceback
-        return JsonResponse({
-            'success': False,
-            'error': str(e),
-            'traceback': traceback.format_exc()
-        }, status=500)
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
 
 @csrf_exempt
@@ -140,7 +135,12 @@ def fetch_tracking_data(request):
         })
         
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        import traceback
+        error_details = {
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }
+        return JsonResponse({'success': False, 'error': error_details}, status=500)
 
 
 @csrf_exempt
@@ -271,17 +271,17 @@ def get_stats(request):
     """Get dashboard statistics"""
     try:
         total_devices = DeviceData.objects.count()
-
+        
         # Status counts
         status_counts = {}
         for status in DeviceData.objects.values_list('datastatus_description', flat=True).distinct():
             count = DeviceData.objects.filter(datastatus_description=status).count()
             status_counts[status] = count
-
+        
         # GPS coordinates availability
         with_coordinates = DeviceData.objects.exclude(latitude=0, longitude=0).count()
         without_coordinates = total_devices - with_coordinates
-
+        
         return JsonResponse({
             'success': True,
             'stats': {
@@ -291,14 +291,9 @@ def get_stats(request):
                 'status_counts': status_counts
             }
         })
-
+        
     except Exception as e:
-        import traceback
-        return JsonResponse({
-            'success': False,
-            'error': str(e),
-            'traceback': traceback.format_exc()
-        }, status=500)
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
 
 @csrf_exempt
