@@ -130,9 +130,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS settings for frontend communication
-CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,http://127.0.0.1:3000,https://gps-tracking-systeam-v2.vercel.app').split(',')
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'https://gps-tracking-systeam-v2.vercel.app',
+    'https://gps-tracking-systeam-v2-7rnaiwotf-vuth-menghuors-projects.vercel.app',
+]
 
 CORS_ALLOW_CREDENTIALS = True
-
-# Allow all headers for development
 CORS_ALLOW_ALL_HEADERS = True
